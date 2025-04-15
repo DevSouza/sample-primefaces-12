@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+		
+		<!-- CSS -->
+		<h:outputStylesheet library="css" name="global.css" />
+		
+		<title>Novo Cliente</title>
+	</h:head>
+
+	<h:body>
+		<div style="margin: 1rem;">
+			<h1>Novo Cliente</h1>
+		
+			<h:form id="frm-customer" style="display: grid; gap: 1rem;">
+				<p:growl>
+					<p:autoUpdate />
+				</p:growl>
+			
+				<p:selectOneRadio value="#{createCustomerBean.newCustomer.type}">
+					<f:selectItem itemLabel="Pessoa Física" itemValue="NATURAL_PERSON" />
+					<f:selectItem itemLabel="Pessoa Jurídica" itemValue="LEGAL_PERSON" />
+					
+					<p:ajax event="change" process="@form" update="@form">
+						<f:setPropertyActionListener value="#{null}" target="#{createCustomerBean.newCustomer.federalIdentificationNumber}" />
+					</p:ajax>
+				</p:selectOneRadio>
+				
+				<p:inputText
+					placeholder="#{createCustomerBean.newCustomer.type eq 'NATURAL_PERSON' ? 'Nome Completo' : 'Razão Social'}"
+					value="#{createCustomerBean.newCustomer.fullname}" />
+				<p:inputText
+					placeholder="#{createCustomerBean.newCustomer.type eq 'NATURAL_PERSON' ? 'Nome Social' : 'Nome Fantasia'}"
+					value="#{createCustomerBean.newCustomer.socialName}" />
+				
+				<p:calendar
+					mask="dd/MM/yyyy" 
+					value="#{createCustomerBean.newCustomer.startDate}"
+					placeholder="#{createCustomerBean.newCustomer.type eq 'NATURAL_PERSON' ? 'Nascimento' : 'Criação'}" />
+				
+				<p:inputMask
+					id="input-document"
+					mask="#{createCustomerBean.newCustomer.type eq 'NATURAL_PERSON' ? '999.999.999-99' : '99.999.999/9999-99'}"
+					placeholder="Numero Documento"
+					value="#{createCustomerBean.newCustomer.federalIdentificationNumber}" />
+				
+				<div style="display: flex; justify-content: end; gap: 1rem;">
+					<p:button value="Voltar" outcome="/index.xhtml"/>
+					<p:commandButton value="Criar" actionListener="#{createCustomerBean.create}" process="@form" update="@form"/>
+				</div>
+			</h:form>
+		</div>
+    </h:body>
+</html>

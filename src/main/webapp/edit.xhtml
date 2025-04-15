@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+		
+		<!-- CSS -->
+		<h:outputStylesheet library="css" name="global.css" />
+		
+		<title>Editar Cliente</title>
+	</h:head>
+
+	<h:body>
+		<div style="margin: 1rem;">
+			<h:form id="frm-customer" style="display: grid; gap: 1rem;">
+				<h1>Editar Cliente (#{updateCustomerBean.editCustomer.type.description})</h1>
+				<p:growl>
+					<p:autoUpdate />
+				</p:growl>
+				
+				<p:inputText
+					placeholder="#{updateCustomerBean.editCustomer.type eq 'NATURAL_PERSON' ? 'Nome Completo' : 'Razão Social'}"
+					value="#{updateCustomerBean.editCustomer.fullname}" />
+				<p:inputText
+					placeholder="#{updateCustomerBean.editCustomer.type eq 'NATURAL_PERSON' ? 'Nome Social' : 'Nome Fantasia'}"
+					value="#{updateCustomerBean.editCustomer.socialName}" />				
+				<p:calendar
+					mask="dd/MM/yyyy" 
+					value="#{updateCustomerBean.editCustomer.startDate}"
+					placeholder="#{updateCustomerBean.editCustomer.type eq 'NATURAL_PERSON' ? 'Nascimento' : 'Criação'}" />
+				
+				<p:inputMask
+					id="input-document"
+					mask="#{updateCustomerBean.editCustomer.type eq 'NATURAL_PERSON' ? '999.999.999-99' : '99.999.999/9999-99'}"
+					placeholder="Numero Documento"
+					value="#{updateCustomerBean.editCustomer.federalIdentificationNumber}" />
+				
+				<div style="display: flex; justify-content: end; gap: 1rem;">
+					<p:button value="Voltar" outcome="/index.xhtml"/>
+					<p:commandButton value="Atualizar" actionListener="#{updateCustomerBean.update}" process="@form" update="@form"/>
+				</div>
+			</h:form>
+		</div>
+    </h:body>
+</html>
